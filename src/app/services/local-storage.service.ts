@@ -1,30 +1,27 @@
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LocalStorageService {
+  constructor() {}
 
-  constructor() { }
-
-  setItem(key:string,value:string){
-    try{
-      localStorage.setItem(key,value);
-    }catch(err){
-      throw new Error('facing error in using localStorage')
+  setItem(key: string, value: string) {
+    try {
+      localStorage.setItem(key, value);
+    } catch (err) {
+      throw new Error('facing error in using localStorage');
     }
-        
   }
 
-  getItem<T>(key:string):T|null{
-    try{
+  getItem<T>(key: string): T | null {
+    try {
       const value = localStorage.getItem(key);
-      if(value){
-       return JSON.parse(value) as T
+      if (value) {
+        return JSON.parse(value) as T;
       }
       return null;
-    }catch(err){
-      console.log("geeting Error !")
+    } catch (err) {
       return null;
     }
   }
@@ -44,5 +41,4 @@ export class LocalStorageService {
       console.error('Error clearing localStorage', err);
     }
   }
-
 }

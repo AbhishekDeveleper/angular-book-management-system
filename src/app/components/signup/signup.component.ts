@@ -1,89 +1,93 @@
 import { Component, signal } from '@angular/core';
-import { FormGroup,FormControl,FormsModule,ReactiveFormsModule,Validators, AbstractControl } from '@angular/forms';
+import {
+  FormGroup,
+  FormControl,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+  AbstractControl,
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import {  RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { Clients } from '../data';
 
-
-interface FormType{
-  userName:string|null,
-  emailId:string|null,
-  password:string|null
-}
-
-function equalPassword(control:AbstractControl){
-   if(control.get('password')?.value===control.get('confirmPassword')?.value){
+function equalPassword(control: AbstractControl) {
+  if (
+    control.get('password')?.value === control.get('confirmPassword')?.value
+  ) {
     return null;
-   }
+  }
 
-   return  {notEqualPassword:true}
-
+  return { notEqualPassword: true };
 }
 
 @Component({
-  selector: 'app-signup',  
+  selector: 'app-signup',
   templateUrl: './signup.component.html',
-  styles:``,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterOutlet, RouterLink],
+  styles: ``,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    RouterOutlet,
+    RouterLink,
+  ],
 })
 export class SignupComponent {
-  userStatus:boolean=false;
+  userStatus: boolean = false;
 
-signupForm = new FormGroup({
-  userName:new FormControl('',[Validators.required]),
-   emailId:new FormControl('',[Validators.required,Validators.email]),
-   passwords:new FormGroup({
-    password:new FormControl('',[Validators.required,Validators.minLength(8)]),
-   confirmPassword:new FormControl('',[Validators.required,Validators.minLength(8)])
-   },{validators:[equalPassword]})
-   
-})
+  signupForm = new FormGroup({
+    userName: new FormControl('', [Validators.required]),
+    emailId: new FormControl('', [Validators.required, Validators.email]),
+    passwords: new FormGroup(
+      {
+        password: new FormControl('', [
+          Validators.required,
+          Validators.minLength(8),
+        ]),
+        confirmPassword: new FormControl('', [
+          Validators.required,
+          Validators.minLength(8),
+        ]),
+      },
+      { validators: [equalPassword] }
+    ),
+  });
 
-get emailId(){
-  return this.signupForm.get('emailId');
-}
-
-
-get userName(){
-  return this.signupForm.get('userName');
-}
-
-
-get password(){
-return this.signupForm.get('passwords.password')
-}
-get confirmPassword(){
-  return this.signupForm.get('passwords.confirmPassword');
-}
-
-
-alreadyExists=signal<boolean>(false);
-closeBtn(){
-  console.log('close btn clicked')
-  this.alreadyExists.set(false)
-  
-}
-submitButton(){
-  
-  const {emailId,passwords,userName}=this.signupForm.value;
- 
-  this.userStatus=Clients.some(user=> user.emailId===emailId)
-  
-  console.log(this.signupForm.value)
-  
-  if(!this.userStatus){
-    console.log(Clients.length)
-    Clients.push({userName:userName as string,emailId:emailId as string,role:"user",password:passwords?.password as string})
-    console.log(Clients.length,Clients);
-    console.log(this.signupForm.value)
-  }else{
-    // console.log("Unauthorized Access ")
-    console.log('User Already Exists');
-    console.log(this.signupForm.value)
-    this.alreadyExists.set(true);
+  get emailId() {
+    return this.signupForm.get('emailId');
   }
 
-  this.signupForm.reset();
-}
+  get userName() {
+    return this.signupForm.get('userName');
+  }
 
+  get password() {
+    return this.signupForm.get('passwords.password');
+  }
+  get confirmPassword() {
+    return this.signupForm.get('passwords.confirmPassword');
+  }
+
+  alreadyExists = signal<boolean>(false);
+  closeBtn() {
+    this.alreadyExists.set(false);
+  }
+  submitButton() {
+    const { emailId, passwords, userName } = this.signupForm.value;
+    this.userStatus = Clients.some((user) => user.emailId === emailId);
+
+    if (!this.userStatus) {
+      Clients.push({
+        userName: userName as string,
+        emailId: emailId as string,
+        role: 'user',
+        password: passwords?.password as string,
+      });
+    } else {
+      this.alreadyExists.set(true);
+    }
+
+    this.signupForm.reset();
+  }
 }

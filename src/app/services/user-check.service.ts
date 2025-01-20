@@ -17,7 +17,7 @@ export class UserCheckService {
       userName: string | null;
     };
     if (typeof userData === null) {
-      console.log(userData);
+      console.warn(userData);
     } else {
       this.emailId = userData?.emailId;
     }

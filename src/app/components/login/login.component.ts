@@ -83,10 +83,8 @@ export class LoginComponent implements OnInit {
       }
     }
 
-    console.log(this.user());
     if (this.userStatusId && this.userStatusPassword) {
       if (this.user().role === 'user') {
-        console.log(this.user().role);
         this.router.navigateByUrl('bookstore');
       } else if (this.user().role === 'admin') {
         this.router.navigateByUrl('addbook');
