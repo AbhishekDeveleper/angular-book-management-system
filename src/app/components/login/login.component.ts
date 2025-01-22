@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
     this.routeUrl.roleBasedRoute();
   }
 
-  userStatusId: boolean = false;
+  userStatus: boolean = false;
   userStatusPassword: boolean = false;
   user = signal<{
     emailId: string | null;
@@ -67,12 +67,12 @@ export class LoginComponent implements OnInit {
 
   submitButton(): void {
     const { emailId, password } = this.userForm.value;
-    this.userStatusId = Clients.some((user) => user.emailId === emailId);
+    this.userStatus = Clients.some((user) => user.emailId === emailId);
 
     this.userStatusPassword = Clients.some(
       (user) => user.password === password
     );
-    if (this.userStatusId && this.userStatusPassword) {
+    if (this.userStatus && this.userStatusPassword) {
       const findUser = Clients.find((curUser) => {
         return curUser.emailId === emailId;
       });
@@ -83,7 +83,7 @@ export class LoginComponent implements OnInit {
       }
     }
 
-    if (this.userStatusId && this.userStatusPassword) {
+    if (this.userStatus && this.userStatusPassword) {
       if (this.user().role === 'user') {
         this.router.navigateByUrl('bookstore');
       } else if (this.user().role === 'admin') {
