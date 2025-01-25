@@ -1,0 +1,153 @@
+<div
+  class="modal-wrapper fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-50 flex justify-center items-center"
+>
+  <div
+    class="modal-content bg-white rounded-md shadow-xl w-full max-w-xl p-5 flex flex-col justify-center items-center relative"
+  >
+    <button
+      class="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md hover:bg-gray-200 text-xl font-bold"
+      (click)="closeModel()"
+    >
+      X
+    </button>
+
+    <h2 class="text-xl font-semibold mb-5">Enter Book Details</h2>
+
+    <!-- Form -->
+    <form
+      [formGroup]="bookForm"
+      class="w-full flex justify-center flex-col items-center space-y-4"
+    >
+      <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="flex flex-col">
+          <label for="authorname" class="mb-1">Author Name</label>
+          <input
+            type="text"
+            id="authorname"
+            class="outline-none border border-gray-400 rounded-md p-2"
+            formControlName="bookAuthor"
+            placeholder="Enter book authorname....."
+          />
+          <p
+            class="text-red-500 text-sm mt-1"
+            [hidden]="bookAuthor.valid || bookAuthor.untouched"
+          >
+            Author Name is required
+          </p>
+        </div>
+
+        <div class="flex flex-col">
+          <label for="booktitle" class="mb-1">Book Title</label>
+          <input
+            type="text"
+            id="booktitle"
+            class="outline-none border border-gray-400 rounded-md p-2"
+            formControlName="bookTitle"
+            placeholder="Enter book title...."
+          />
+          <p
+            class="text-red-500 text-sm mt-1"
+            [hidden]="bookTitle.valid || bookTitle.untouched"
+          >
+            Book title is mandatory
+          </p>
+        </div>
+
+        <div class="flex flex-col">
+          <label for="bookisbn" class="mb-1">Book ISBN</label>
+          <input
+            type="text"
+            id="bookisbn"
+            class="outline-none border border-gray-400 rounded-md p-2"
+            formControlName="bookIsbn"
+            placeholder="Enter book Isbn number..."
+          />
+          <p
+            class="text-red-500 text-sm mt-1"
+            [hidden]="bookIsbn.valid || bookIsbn.untouched"
+          >
+            It's must be filled
+          </p>
+          @if(bookIsbn.hasError('pattern')){
+          <small class="text-red-500 text-sm mt-1">
+            {{ bookIsbnMessage }}
+          </small>
+
+          }
+        </div>
+
+        <div class="flex flex-col">
+          <label for="publishdate" class="mb-1">Book Publish Date</label>
+          <input
+            type="date"
+            id="publishdate"
+            class="outline-none border border-gray-400 rounded-md p-2"
+            formControlName="bookPublishDate"
+          />
+          <p
+            class="text-red-500 text-sm mt-1"
+            [hidden]="bookPublishDate.valid || bookPublishDate.untouched"
+          >
+            This field is mandatory
+          </p>
+        </div>
+
+        <div class="flex flex-col">
+          <label for="bookprice" class="mb-1">Book Price</label>
+          <input
+            type="text"
+            id="bookprice"
+            class="outline-none border border-gray-400 rounded-md p-2"
+            formControlName="bookPrice"
+            placeholder="Enter book price..."
+          />
+          <p
+            class="text-red-500 text-sm mt-1"
+            [hidden]="bookPrice.valid || bookPrice.untouched"
+          >
+            Field is required
+          </p>
+          @if(bookPrice.hasError('pattern')){
+          <small class="text-red-500 text-sm mt-1">
+            {{ priceMessage }}
+          </small>
+
+          }
+        </div>
+
+        <div class="flex flex-col">
+          <label for="bookcategory" class="mb-1">Book Category</label>
+          <select
+            name="bookCategory"
+            id="bookCategory"
+            formControlName="bookCategory"
+            class="outline-none border border-gray-400 rounded-md p-2"
+          >
+            <option value="Science">Science</option>
+            <option value="History">History</option>
+            <option value="Politics">Politics</option>
+            <option value="Fiction">Fiction</option>
+            <option value="Geography">Geography</option>
+          </select>
+          <p
+            class="text-red-500 text-sm mt-1"
+            [hidden]="bookCategory.valid || bookCategory.untouched"
+          >
+            Book category is required
+          </p>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="w-full flex justify-center items-center mt-5">
+        <button
+          [disabled]="!bookForm.valid"
+          (click)="addBookBtn()"
+          class="h-9 w-full p-4 bg-sky-800 rounded-md flex justify-center items-center text-white cursor-pointer"
+        >
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,81 @@
+<app-navbar/>
+@if(bookservice.bookData()){
+    <div class="flex justify-center items-center  w-[90%] min-h-fit  m-auto pl-4 pr-4 pb-6 mt-12 shadow-xl">
+        <table class="border-collapse   table-auto  w-full min-h-fit p-10">
+            
+            <caption class="caption-top mb-8">
+                <input type="search" name="" id="search-input" [(ngModel)]="bookservice.searchQuery" (input)="filterBooks()" placeholder="Search by book title" class="outline-none rounded-md border-2 border-gray-50   mb-5 p-2 shadow-2xl">
+                <select name="" id="" [(ngModel)]="bookservice.searchByGener" class="outline-none p-2 ml-4 shadow-xl rounded-md" (change)="filterBooks()">
+                   <option value="All">All</option>
+                   <option value="Science"  >Science</option>
+                   <option value="History">History</option>
+                   <option value="Politics">Politics</option>
+                   <option value="Fiction">Fiction</option>
+                   <option value="Geography">Geography</option>
+                </select>
+                <a routerLink="/otherbook" class="ml-5 text-sky-400">Other Book Link -></a>
+              </caption>
+                    <tr>
+                        <th class="">Author Name</th>
+                        <th class="">Book Title</th>
+                        <th class="">Book Category</th>
+                        <th class="">Book ISBN Number</th>
+                        <th class="">Published Date</th>
+                        <th>Book Age</th>
+                        <th>Book Price</th>
+                        <th class="">Issue Book</th>
+                        
+    
+                    </tr>
+                    @if(!bookservice.searchQuery() && (bookservice.searchByGener()==='All')){
+
+                    
+                    @for(book of bookservice.bookData();track  book.id){
+                            <tr class="">
+                                <td class="border-t  text-center h-16">{{book.bookAuthor}}</td>
+                                <td class="border-t  text-center h-16">{{book.bookTitle | titlecase}} </td>
+                                <td class="border-t  text-center h-16">{{book.bookGenere}}</td>
+                                <td class="border-t  text-center h-16">{{book.bookIsbn}}</td>
+                                <td class="border-t  text-center h-16">{{book.publishedDate | date}}</td>
+                                <td class="border-t  text-center h-16">{{calcuateBookAge(book.publishedDate)}}</td>
+                                <td class="border-t  text-center h-16">{{book.price | currency}}</td>
+                                 <td class="border-t text-center h-16  ">
+                                    @if(book.userId===bookservice.currentUser().userId){
+                                        <p class="cursor-pointer font-bold text-red-600">Issued by you</p>
+                                    }@else if(!book.userId){
+                                        <p class="cursor-pointer font-bold text-blue-600">Available</p>
+                                    }@else {
+                                        <p class="cursor-pointer font-bold text-green-600">Issued By Other</p>
+                                    }
+                                   
+                                 </td>
+                            </tr>
+                    }}@else if((bookservice.searchByGener() || (bookservice.searchQuery()!='All'))){
+                              @for(book of bookservice.matchedBook();track book.id){
+                                <tr class="">
+                                    <td class="border-t  text-center h-16">{{book.bookAuthor}}</td>
+                                    <td class="border-t  text-center h-16">{{book.bookTitle | titlecase}}</td>
+                                    <td class="border-t  text-center h-16">{{book.bookGenere}}</td>
+                                    <td class="border-t  text-center h-16">{{book.bookIsbn}}</td>
+                                    <td class="border-t  text-center h-16">{{book.publishedDate | date}}</td>
+                                    <td class="border-t  text-center h-16">{{calcuateBookAge(book.publishedDate)}}</td>
+                                    <td class="border-t  text-center h-16">{{book.price | currency}}</td>
+                                     <td class="border-t text-center h-16  ">
+                                        @if(book.userId===bookservice.currentUser().userId){
+                                            <p class="cursor-pointer font-bold text-red-600">Issued by you</p>
+                                        }@else if(!book.userId){
+                                            <p class="cursor-pointer font-bold text-blue-600">Available</p>
+                                        }@else {
+                                            <p class="cursor-pointer font-bold text-green-600">Issued By Other</p>
+                                        }
+                                       
+                                     </td>
+                                </tr>
+                              }   
+                    }
+        </table>
+    </div>
+   
+}
+
+<router-outlet/>

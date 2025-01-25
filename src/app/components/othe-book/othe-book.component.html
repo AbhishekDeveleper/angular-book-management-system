@@ -1,0 +1,34 @@
+<app-navbar/>
+@if(bookData() && !dataLoading){
+    <div class="flex justify-center items-center  w-[90%] min-h-fit  m-auto pl-4 pr-4 pb-6 mt-12 shadow-xl">
+        <table class="border-collapse   table-auto  w-full min-h-fit p-10">        
+                    <tr>
+                        <th class="">Author Name</th>
+                        <th class="">Book Title</th>
+                        <th class="">Book Category</th>
+                        <th class="">Book ISBN Number</th>
+                        <th class="">Published Date</th>
+                        <th>Book Price</th>
+                    </tr>
+                    
+                    @for(book of bookData();track  book.id){
+                            <tr class="">
+                                <td class="border-t  text-center h-16">{{book.authors[0].name}}</td>
+                                <td class="border-t  text-center h-16">{{book.title | titlecase}} </td>
+                                <td class="border-t  text-center h-16">{{book.subject[2]}}</td>
+                                <td class="border-t  text-center h-16">{{book.cover_id}}</td>
+                                
+                                <td class="border-t  text-center h-16">{{book.first_publish_year}}</td>
+                                <td class="border-t  text-center h-16">{{book.edition_count | currency}}</td>  
+                            </tr>
+                        }
+        </table>
+    </div>
+   
+}@else {
+    <p class="w-full h-lvh text-red-500  text-2xl flex justify-center items-center">Data Loading Please Wait....</p>
+}
+
+
+
+<router-outlet/>
